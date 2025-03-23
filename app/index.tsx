@@ -1,15 +1,18 @@
+import Button from "@/components/Button";
 import { Text, View } from "react-native";
 
-export default function Index() {
+export default function HomeScreen() {
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
+        justifyContent: "space-evenly",
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Button meal="Breakfast" />
+      <Button meal="Lunch" />
+      <Button meal="Dinner" />
     </View>
   );
 }
