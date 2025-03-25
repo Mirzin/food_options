@@ -1,18 +1,9 @@
-import Button from "@/components/Button";
-import { Text, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
-export default function HomeScreen() {
+export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "space-evenly",
-        alignItems: "center",
-      }}
-    >
-      <Button meal="Breakfast" />
-      <Button meal="Lunch" />
-      <Button meal="Dinner" />
+    <View className="flex-1">
+      <ActivityIndicator size="large" className="my-auto" />
     </View>
   );
 }

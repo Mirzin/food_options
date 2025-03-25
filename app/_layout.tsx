@@ -1,23 +1,32 @@
-import { Stack } from "expo-router";
+import { Slot, useRouter, useSegments } from "expo-router";
 import "./globals.css";
-import { StatusBar } from "react-native";
+import { AuthContextProvider, useAuth } from "@/context/authContext";
+import { useEffect } from "react";
+
+const MainLayout = () => {
+  const { isAuthenticated } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof isAuthenticated == "undefined") {
+      return;
+    }
+    const inApp = segments[0] == "(app)";
+    if (isAuthenticated && !inApp) {
+      router.replace("/home");
+    } else if (!isAuthenticated) {
+      router.replace("/signIn");
+    }
+  }, [isAuthenticated]);
+
+  return <Slot />;
+};
 
 export default function RootLayout() {
   return (
-    <>
-      <StatusBar backgroundColor="#3b0764" />
-      <Stack>
-        <Stack.Screen
-          name="index"
-          options={{
-            headerStyle: { backgroundColor: "#3b0764" },
-            headerTitle: "Food Options Random",
-            headerTitleStyle: { color: "white", fontWeight: "bold" },
-            headerTitleAlign: "center",
-          }}
-        />
-        <Stack.Screen name="random/[meal]" options={{ headerShown: false }} />
-      </Stack>
-    </>
+    <AuthContextProvider>
+      <MainLayout />
+    </AuthContextProvider>
   );
 }
