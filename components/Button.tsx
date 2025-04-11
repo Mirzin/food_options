@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity } from "react-native";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import React from "react";
 
 interface Props {
@@ -7,20 +7,17 @@ interface Props {
 }
 
 const Button = ({ meal }: Props) => {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push(`/random/${meal}`);
+  }
+
   return (
-    <Link
-      href={{
-        pathname: "/random/[meal]",
-        params: { meal },
-      }}
-      asChild
-    >
-      <TouchableOpacity className="bg-purple-950 rounded-lg p-5 w-72">
+      <TouchableOpacity className="bg-purple-950 rounded-lg p-5 w-72" onPress={handleClick}>
         <Text className="text-white font-semibold text-3xl text-center">
           {meal}
         </Text>
       </TouchableOpacity>
-    </Link>
   );
 };
 

@@ -1,54 +1,17 @@
-const breakfastOptions: Food[] = [
-  {
-    name: "Eggs and Bread",
-    ingredients: ["bread", "eggs", "salt", "butter"],
-    timeToPrepare: 20,
-  },
-  {
-    name: "Banana Fry",
-    timeToPrepare: 20,
-  },
-  {
-    name: "Dosa, chutney",
-    timeToPrepare: 20,
-  },
-];
+import { db } from "@/firebase.config";
+import { Food, Meals } from "@/interfaces/interface";
+import { doc, getDoc } from "firebase/firestore";
 
-const lunchOptions: Food[] = [
-  {
-    name: "Pasta",
-    ingredients: ["pasta", "salt"],
-    timeToPrepare: 40,
-  },
-];
-
-const dinnertOptions: Food[] = [
-  {
-    name: "Eggs and Bread",
-    ingredients: ["bread", "eggs", "salt", "butter"],
-    timeToPrepare: 20,
-  },
-  {
-    name: "Banana Fry",
-    timeToPrepare: 20,
-  },
-  {
-    name: "Dosa, chutney",
-    timeToPrepare: 20,
-  },
-];
-
-export const getRandomMeal = (mealType: string) => {
-  switch (mealType.toLowerCase()) {
-    case "breakfast":
-      return breakfastOptions.at(
-        Math.floor(Math.random() * breakfastOptions.length)
-      );
-    case "lunch":
-      return lunchOptions.at(Math.floor(Math.random() * lunchOptions.length));
-    case "dinner":
-      return dinnertOptions.at(
-        Math.floor(Math.random() * dinnertOptions.length)
-      );
+export const getRandomMeal = (foods: Food[]) => {
+  if (foods === undefined || foods.length === 0) {
+    return null;
   }
+  return foods.at(Math.floor(Math.random() * foods.length));
+};
+
+export const getAllMeals = async () => {
+  const mealsDocRef = await getDoc(doc(db, "meals", "Mirzin"));
+  const data = mealsDocRef.data();
+  const meals: Meals = data as Meals;
+  return meals;
 };

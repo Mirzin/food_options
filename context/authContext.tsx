@@ -61,7 +61,10 @@ export const AuthContextProvider = ({ children }: any) => {
       let errorMessage: String = e.message;
       errorMessage = errorMessage.replace("Firebase: ", "");
       errorMessage = errorMessage.replace("auth/", "");
-      errorMessage = errorMessage.replace("missing-email", "Username Not Found");
+      errorMessage = errorMessage.replace(
+        "missing-email",
+        "Username Not Found"
+      );
       return { success: false, msg: errorMessage };
     }
   };
@@ -82,7 +85,6 @@ export const AuthContextProvider = ({ children }: any) => {
       console.log(response?.user);
       await setDoc(doc(db, "users", username), {
         username,
-        userId: response.user.uid,
         email: email,
       });
       return { success: true, data: response.user };

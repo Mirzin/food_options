@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import React, { useRef, useState } from "react";
 import {
-  widthPercentageToDP as widthPercentage,
   heightPercentageToDP as heightPercentage,
 } from "react-native-responsive-screen";
 import { useRouter } from "expo-router";
@@ -35,7 +34,7 @@ const SignIn = () => {
     setLoading(false);
     console.log(response);
     if (!response.success) {
-      Alert.alert("Sign Up", response.msg);
+      Alert.alert("Sign In", response.msg);
     }
   };
 
