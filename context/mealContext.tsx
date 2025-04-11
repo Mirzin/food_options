@@ -1,9 +1,13 @@
 import { Meals } from "@/interfaces/interface";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "./authContext";
+import { getAllMeals } from "@/services/api";
+import { Alert } from "react-native";
 
 type MealContextType = {
   meals: Meals;
   setMeals: (meals: Meals) => void;
+  isLoading: boolean;
 };
 
 const MealContext = createContext<MealContextType | undefined>(undefined);
@@ -14,9 +18,27 @@ export const MealProvider = ({ children }: { children: React.ReactNode }) => {
     lunch: [],
     dinner: [],
   });
+  const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setMeals(await getAllMeals(user?.email ? user.email : ""));
+        console.log(meals);
+        setMeals(meals);
+      } catch (e: any) {
+        console.log(e);
+        Alert.alert("Error Fetching Data", e.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
-    <MealContext.Provider value={{ meals, setMeals }}>
+    <MealContext.Provider value={{ isLoading, meals, setMeals }}>
       {children}
     </MealContext.Provider>
   );

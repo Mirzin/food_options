@@ -1,3 +1,5 @@
+import { User } from "firebase/auth";
+
 export type MealType = "breakfast" | "lunch" | "dinner";
 
 export type Meals = {
@@ -17,8 +19,7 @@ interface AuthResponse {
 }
 
 interface AuthProps {
-  username: string;
-  user: any;
+  user: User | null;
   isAuthenticated?: any;
   login: (username: string, password: string) => Promise<AuthResponse>;
   register: (

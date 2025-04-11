@@ -12,11 +12,8 @@ import { AuthProps } from "@/interfaces/interface";
 
 let AuthContext: Context<AuthProps>;
 
-const STORAGE_KEY = "@food_options_firebase_user";
-
 export const AuthContextProvider = ({ children }: any) => {
   const [user, setUser] = useState<User | null>(null);
-  const [username, setUsername] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
     false
   );
@@ -43,7 +40,6 @@ export const AuthContextProvider = ({ children }: any) => {
         userEmail,
         password
       );
-      setUsername(username);
       return { success: true, data: response.user };
     } catch (e: any) {
       let errorMessage: String = e.message;
@@ -59,7 +55,6 @@ export const AuthContextProvider = ({ children }: any) => {
 
   const logout = async () => {
     await signOut(auth);
-    setUsername("");
   };
 
   const register = async (
@@ -78,7 +73,6 @@ export const AuthContextProvider = ({ children }: any) => {
         username,
         email: email,
       });
-      setUsername(username);
       return { success: true, data: response.user };
     } catch (e: any) {
       let errorMessage: String = e.message;
@@ -89,7 +83,6 @@ export const AuthContextProvider = ({ children }: any) => {
   };
 
   AuthContext = createContext<AuthProps>({
-    username,
     user,
     isAuthenticated,
     login,
@@ -100,7 +93,6 @@ export const AuthContextProvider = ({ children }: any) => {
   return (
     <AuthContext.Provider
       value={{
-        username,
         user,
         isAuthenticated,
         login,
