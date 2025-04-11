@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import { useAuth } from "@/context/authContext";
 import { useMeal } from "@/context/mealContext";
 import { Meals } from "@/interfaces/interface";
 import { getAllMeals } from "@/services/api";
@@ -8,11 +9,13 @@ import { ActivityIndicator, Alert, Text, View } from "react-native";
 export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const { setMeals } = useMeal();
+  const { username } = useAuth();
   let meals: Meals | undefined;
   useEffect(() => {
     const fetchData = async () => {
       try {
-        meals = await getAllMeals();
+        meals = await getAllMeals(username);
+        console.log(`username: ${username}`);
         console.log(meals);
         setMeals(meals);
       } catch (e: any) {

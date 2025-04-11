@@ -9,8 +9,8 @@ export const getRandomMeal = (foods: Food[]) => {
   return foods.at(Math.floor(Math.random() * foods.length));
 };
 
-export const getAllMeals = async () => {
-  const mealsDocRef = await getDoc(doc(db, "meals", "Mirzin"));
+export const getAllMeals = async (username: string) => {
+  const mealsDocRef = await getDoc(doc(db, "meals", username));
   const data = mealsDocRef.data();
   const meals: Meals = data as Meals;
   return meals;

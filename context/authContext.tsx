@@ -15,6 +15,7 @@ interface AuthResponse {
 }
 
 interface AuthProps {
+  username: string;
   user: any;
   isAuthenticated?: any;
   login: (username: string, password: string) => Promise<AuthResponse>;
@@ -30,6 +31,7 @@ let AuthContext: Context<AuthProps>;
 
 export const AuthContextProvider = ({ children }: any) => {
   const [user, setUser] = useState<User | null>(null);
+  const [username, setUsername] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
     false
   );
@@ -56,6 +58,7 @@ export const AuthContextProvider = ({ children }: any) => {
         userEmail,
         password
       );
+      setUsername(username);
       return { success: true, data: response.user };
     } catch (e: any) {
       let errorMessage: String = e.message;
@@ -87,6 +90,7 @@ export const AuthContextProvider = ({ children }: any) => {
         username,
         email: email,
       });
+      setUsername(username);
       return { success: true, data: response.user };
     } catch (e: any) {
       let errorMessage: String = e.message;
@@ -97,6 +101,7 @@ export const AuthContextProvider = ({ children }: any) => {
   };
 
   AuthContext = createContext<AuthProps>({
+    username,
     user,
     isAuthenticated,
     login,
@@ -106,7 +111,14 @@ export const AuthContextProvider = ({ children }: any) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, login, register, logout }}
+      value={{
+        username,
+        user,
+        isAuthenticated,
+        login,
+        register,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>
