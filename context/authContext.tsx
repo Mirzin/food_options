@@ -8,8 +8,7 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useEffect, useState, createContext, useContext, Context } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthProps, UserData } from "@/interfaces/interface";
+import { AuthProps } from "@/interfaces/interface";
 
 let AuthContext: Context<AuthProps>;
 
@@ -23,33 +22,11 @@ export const AuthContextProvider = ({ children }: any) => {
   );
 
   useEffect(() => {
-    const restoreUser = async () => {
-      try {
-        const storedUser = await AsyncStorage.getItem(STORAGE_KEY);
-        if (storedUser) {
-          const parsed = JSON.parse(storedUser);
-          setUser(parsed);
-          setIsAuthenticated(true);
-        }
-      } catch (err) {
-        console.error("Error restoring user from local storage", err);
-      }
-    };
-    restoreUser();
-  }, []);
-
-  useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const userData: UserData = {
-          uid: user.uid,
-          email: user.email,
-        };
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
         setIsAuthenticated(true);
         setUser(user);
       } else {
-        await AsyncStorage.removeItem(STORAGE_KEY);
         setIsAuthenticated(false);
         setUser(null);
       }
@@ -82,7 +59,6 @@ export const AuthContextProvider = ({ children }: any) => {
 
   const logout = async () => {
     await signOut(auth);
-    await AsyncStorage.removeItem(STORAGE_KEY);
     setUsername("");
   };
 

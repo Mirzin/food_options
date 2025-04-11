@@ -28,8 +28,3 @@ interface AuthProps {
   ) => Promise<AuthResponse>;
   logout: () => {};
 }
-
-interface UserData {
-  uid: string;
-  email: string | null;
-}
