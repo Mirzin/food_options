@@ -1,7 +1,14 @@
-import { View, Text, StatusBar } from "react-native";
+import {
+  Pressable,
+  StatusBar,
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import { Stack } from "expo-router";
 import { MealProvider } from "@/context/mealContext";
+import LogoutButton from "@/components/LogOutButton";
+import { Ionicons } from "@expo/vector-icons";
 
 const RootLayout = () => {
   return (
@@ -20,6 +27,20 @@ const RootLayout = () => {
         <Stack.Screen
           name="random/[meal]"
           options={{
+            headerStyle: { backgroundColor: "#3b0764" },
+            headerTitleStyle: {
+              color: "white",
+              fontWeight: "bold",
+              fontSize: 24,
+            },
+            headerTitleAlign: "center",
+            headerTintColor: "#ffffff",
+          }}
+        />
+        <Stack.Screen
+          name="addMeal"
+          options={{
+            title: "Add New Meal",
             headerStyle: { backgroundColor: "#3b0764" },
             headerTitleStyle: {
               color: "white",

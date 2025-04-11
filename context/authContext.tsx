@@ -1,4 +1,5 @@
 import { auth, db } from "@/firebase.config";
+import { Meals } from "@/interfaces/interface";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -54,6 +55,7 @@ export const AuthContextProvider = ({ children }: any) => {
   };
 
   const logout = async () => {
+    console.log("Logging out...");
     await signOut(auth);
   };
 
@@ -71,7 +73,12 @@ export const AuthContextProvider = ({ children }: any) => {
       console.log(response?.user);
       await setDoc(doc(db, "users", username), {
         username,
-        email: email,
+        email: email.toLowerCase(),
+      });
+      await setDoc(doc(db, "meals", email.toLowerCase()), {
+        breakfast: [],
+        lunch: [],
+        dinner: [],
       });
       return { success: true, data: response.user };
     } catch (e: any) {
