@@ -54,7 +54,7 @@ const Meal = () => {
       ) : (
         <View className="flex-1">
           <Pressable
-            onPress={() => router.push("/editMeals")}
+            onPress={() => router.push("/allMeals")}
             style={{
               position: "absolute",
               top: 30,
