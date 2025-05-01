@@ -65,6 +65,10 @@ export const AuthContextProvider = ({ children }: any) => {
     password: string
   ) => {
     try {
+      const document = await getDoc(doc(db, "users", username));
+      if (document.exists()) {
+        throw new Error("Username already exists");
+      }
       const response = await createUserWithEmailAndPassword(
         auth,
         email,

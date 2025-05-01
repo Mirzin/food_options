@@ -7,8 +7,6 @@ import {
 import React from "react";
 import { Stack } from "expo-router";
 import { MealProvider } from "@/context/mealContext";
-import LogoutButton from "@/components/LogOutButton";
-import { Ionicons } from "@expo/vector-icons";
 
 const RootLayout = () => {
   return (
@@ -41,6 +39,20 @@ const RootLayout = () => {
           name="addMeal"
           options={{
             title: "Add New Meal",
+            headerStyle: { backgroundColor: "#3b0764" },
+            headerTitleStyle: {
+              color: "white",
+              fontWeight: "bold",
+              fontSize: 24,
+            },
+            headerTitleAlign: "center",
+            headerTintColor: "#ffffff",
+          }}
+        />
+        <Stack.Screen
+          name="allMeals"
+          options={{
+            title: "All meals",
             headerStyle: { backgroundColor: "#3b0764" },
             headerTitleStyle: {
               color: "white",

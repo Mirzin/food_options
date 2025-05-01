@@ -24,9 +24,8 @@ export const MealProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(`Email: ${user?.email}`);
         if (user?.email) setMeals(await getAllMeals(user?.email));
-        console.log(meals);
-        setMeals(meals);
       } catch (e: any) {
         console.log(e);
         Alert.alert("Could not get your meals", e.message);

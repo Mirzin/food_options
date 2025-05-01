@@ -10,8 +10,9 @@ export const getRandomMeal = (foods: Food[]) => {
 };
 
 export const getAllMeals = async (username: string) => {
+  console.log("Getting meals from DB...");
   const mealsDocRef = await getDoc(doc(db, "meals", username));
   const data = mealsDocRef.data();
-  const meals: Meals = data as Meals;
-  return meals;
+  console.log(data);
+  return data as Meals;
 };
