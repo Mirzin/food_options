@@ -37,3 +37,6 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+#service account key file
+food-options-458509-70a374f52bdb.json
