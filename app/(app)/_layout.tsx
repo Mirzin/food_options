@@ -38,7 +38,7 @@ const RootLayout = () => {
         <Stack.Screen
           name="addMeal"
           options={{
-            title: "Add New Meal",
+            title: "Update Meals",
             headerStyle: { backgroundColor: "#3b0764" },
             headerTitleStyle: {
               color: "white",

@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "@/context/authContext";
-import LogoutButton from "@/components/LogOutButton";
 
 export default function HomeScreen() {
   const { isLoading } = useMeal();
@@ -20,7 +19,7 @@ export default function HomeScreen() {
   const { logout } = useAuth();
 
   const handlePress = () => {
-    console.log("Pressed");
+    console.log("Logout Pressed");
     Alert.alert("Logout", "Are you sure you want to logout?", [
       { text: "Cancel", style: "cancel" },
       {
@@ -67,6 +66,21 @@ export default function HomeScreen() {
             }}
           >
             <Ionicons name="add" size={30} color="#fff" />
+          </Pressable>
+          <Pressable
+            onPress={() => router.push("/allMeals")}
+            style={{
+              position: "absolute",
+              top: 30,
+              left: 20,
+              zIndex: 1,
+              backgroundColor: "#3b0764",
+              borderRadius: 999,
+              padding: 12,
+              elevation: 5,
+            }}
+          >
+            <Ionicons name="list" size={30} color="#fff" />
           </Pressable>
           <View
             style={{

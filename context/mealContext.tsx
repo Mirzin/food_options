@@ -1,12 +1,17 @@
-import { Meals } from "@/interfaces/interface";
+import { Food, Meals, MealType } from "@/interfaces/interface";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./authContext";
 import { getAllMeals } from "@/services/api";
 import { Alert } from "react-native";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/firebase.config";
 
 type MealContextType = {
   meals: Meals;
   setMeals: (meals: Meals) => void;
+  addMeal: (mealType: MealType, meal: Food) => void;
+  deleteMeal: (mealType: MealType, index: number) => void;
+  updateMeal: (mealType: MealType, index: number, meal: Food) => void;
   isLoading: boolean;
 };
 
@@ -36,8 +41,69 @@ export const MealProvider = ({ children }: { children: React.ReactNode }) => {
     fetchData();
   }, []);
 
+  const addMeal = async (mealType: MealType, meal: Food) => {
+    try {
+      setIsLoading(true);
+      const newMeals = {
+        ...meals,
+        [mealType]: [...(meals[mealType] || []), meal],
+      };
+      setMeals(newMeals);
+      if (user?.email) await setDoc(doc(db, "meals", user?.email), newMeals);
+      Alert.alert("Success", "Meal added!");
+    } catch (e) {
+      console.error(e);
+      Alert.alert("Error", "Could not add meal.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const deleteMeal = async (mealType: MealType, index: number) => {
+    try {
+      setIsLoading(true);
+      const newMeals = {
+        ...meals,
+        [mealType]: [
+          ...meals[mealType].slice(0, index),
+          ...meals[mealType].slice(index + 1),
+        ],
+      };
+      setMeals(newMeals);
+      if (user?.email) await setDoc(doc(db, "meals", user?.email), newMeals);
+    } catch (e) {
+      console.error(e);
+      Alert.alert("Error", "Could not delete meal.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateMeal = async (mealType: MealType, index: number, meal: Food) => {
+    try {
+      setIsLoading(true);
+      const newMeals = {
+        ...meals,
+        [mealType]: [
+          ...meals[mealType].slice(0, index),
+          meal,
+          ...meals[mealType].slice(index + 1),
+        ],
+      };
+      setMeals(newMeals);
+      if (user?.email) await setDoc(doc(db, "meals", user?.email), newMeals);
+    } catch (e) {
+      console.error(e);
+      Alert.alert("Error", "Could not update meal.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <MealContext.Provider value={{ isLoading, meals, setMeals }}>
+    <MealContext.Provider
+      value={{ isLoading, meals, setMeals, addMeal, deleteMeal, updateMeal }}
+    >
       {children}
     </MealContext.Provider>
   );

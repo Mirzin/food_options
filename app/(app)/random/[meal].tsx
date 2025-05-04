@@ -66,7 +66,7 @@ const Meal = () => {
               elevation: 5,
             }}
           >
-            <Ionicons name="create-outline" size={30} color="#fff" />
+            <Ionicons name="list" size={30} color="#fff" />
           </Pressable>
           <View className="items-center my-auto">
             <Text className="text-4xl">{randomFood?.name}</Text>

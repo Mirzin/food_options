@@ -2,19 +2,26 @@ import React, { useState } from "react";
 import { Alert, Button, Text, TextInput, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Food, MealType } from "@/interfaces/interface";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
-import { db } from "@/firebase.config";
-import { useAuth } from "@/context/authContext";
 import { useMeal } from "@/context/mealContext";
+import { router, useLocalSearchParams } from "expo-router";
 
 export default function AddMeal() {
-  const [name, setName] = useState("");
-  const [mealType, setMealType] = useState<MealType>("breakfast");
-  const [ingredientsText, setIngredientsText] = useState("");
-  const [prepTime, setPrepTime] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
-  const { meals, setMeals } = useMeal();
+  const params = useLocalSearchParams();
+  const { meals, addMeal, isLoading, updateMeal } = useMeal();
+  const index = Number(params.index);
+  const intialMealType = params.mealType as MealType;
+  const isUpdateMeal = Boolean(params.updateMeal) || false;
+  const initialFood = index ? meals[intialMealType].at(index) : null;
+  const [name, setName] = useState(initialFood?.name || "");
+  const [mealType, setMealType] = useState<MealType>(
+    intialMealType || "breakfast"
+  );
+  const [ingredientsText, setIngredientsText] = useState(
+    initialFood?.ingredients?.join(", ") || ""
+  );
+  const [prepTime, setPrepTime] = useState(
+    initialFood?.timeToPrepare.toString() || ""
+  );
 
   const handleAddMeal = async () => {
     if (!name || !prepTime) {
@@ -33,24 +40,15 @@ export default function AddMeal() {
       ingredients,
     };
 
-    try {
-      setLoading(true);
-      const newMeals = {
-        ...meals,
-        [mealType]: [...(meals[mealType] || []), newFood],
-      };
-      setMeals(newMeals);
-      if (user?.email) await setDoc(doc(db, "meals", user?.email), newMeals);
-      Alert.alert("Success", "Meal added!");
+    if (isUpdateMeal) {
+      updateMeal(mealType, index, newFood);
+      router.back();
+    } else {
+      addMeal(mealType, newFood);
       setName("");
       setMealType("breakfast");
       setIngredientsText("");
       setPrepTime("");
-    } catch (e) {
-      console.error(e);
-      Alert.alert("Error", "Could not add meal.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -92,9 +90,12 @@ export default function AddMeal() {
       />
 
       <Button
-        title={loading ? "Adding..." : "Add Meal"}
+        color="#3b0764"
+        title={
+          isLoading ? "Updating..." : isUpdateMeal ? "Update Meal" : "Add Meal"
+        }
         onPress={handleAddMeal}
-        disabled={loading}
+        disabled={isLoading}
       />
     </View>
   );
