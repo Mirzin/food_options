@@ -1,6 +1,5 @@
 import MealList from "@/components/MealList";
-import { useMeal } from "@/context/mealContext";
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView } from "react-native";
 
 export default function AllMeals() {
   return (

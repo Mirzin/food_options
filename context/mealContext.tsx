@@ -49,7 +49,9 @@ export const MealProvider = ({ children }: { children: React.ReactNode }) => {
         [mealType]: [...(meals[mealType] || []), meal],
       };
       setMeals(newMeals);
+      console.log("Adding meal in database...");
       if (user?.email) await setDoc(doc(db, "meals", user?.email), newMeals);
+      console.log("Successfully added meal in database");
       Alert.alert("Success", "Meal added!");
     } catch (e) {
       console.error(e);
@@ -70,7 +72,9 @@ export const MealProvider = ({ children }: { children: React.ReactNode }) => {
         ],
       };
       setMeals(newMeals);
+      console.log("Deleting meal from database...");
       if (user?.email) await setDoc(doc(db, "meals", user?.email), newMeals);
+      console.log("Deleted meal from database successfully");
     } catch (e) {
       console.error(e);
       Alert.alert("Error", "Could not delete meal.");
@@ -91,7 +95,9 @@ export const MealProvider = ({ children }: { children: React.ReactNode }) => {
         ],
       };
       setMeals(newMeals);
+      console.log("Updating meal in database...");
       if (user?.email) await setDoc(doc(db, "meals", user?.email), newMeals);
+      console.log("Updated meal in database successfully");
     } catch (e) {
       console.error(e);
       Alert.alert("Error", "Could not update meal.");

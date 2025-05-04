@@ -20,10 +20,11 @@ export default function MealList({ mealType }: Props) {
         params: {
           mealType,
           index,
-          updateMeal: "true"
+          updateMeal: "true",
         },
       });
     };
+    
     const handleDelete = () => {
       console.log(`Delete Pressed on ${mealType}-${index}`);
       Alert.alert(
